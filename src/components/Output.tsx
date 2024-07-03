@@ -1,4 +1,4 @@
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, useToast } from "@chakra-ui/react";
 import React, { useState } from "react";
 import * as monaco from "monaco-editor";
 import { executeCode } from "../api";
@@ -11,6 +11,7 @@ interface OutputProps {
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
   const [output, setOutput] = useState<string | null>(null);
   const [isloading, setIsLoading] = useState<boolean>(false);
+  const toast = useToast();
 
   const runCode = async () => {
     // null값인지를 먼저 체크해줘야 getValue()를 사용할 수 있음.
@@ -27,7 +28,15 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       // 결과값의 run속성을 result에 할당함
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output);
-    } catch (error) {
+    } catch (error: Error | any) {
+      console.error(error);
+      toast({
+        title: "An error occurred.",
+        description: error.message || "Please try again.",
+        status: "error",
+        duration: 6000,
+        isClosable: true,
+      });
     } finally {
       setIsLoading(false);
     }
