@@ -1,5 +1,5 @@
 import { Box, Text, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import * as monaco from "monaco-editor";
 import { executeCode } from "../api";
 
@@ -9,7 +9,10 @@ interface OutputProps {
 }
 
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
+  const [output, setOutput] = useState<string | null>(null);
+
   const runCode = async () => {
+    // null값인지를 먼저 체크해줘야 getValue()를 사용할 수 있음.
     if (!editorRef.current) {
       console.log("editorRef가 null값임.");
       return;
@@ -19,8 +22,9 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
     if (!sourceCode) return;
 
     try {
-      const result = await executeCode(language, sourceCode);
-      console.log(result);
+      // 결과값의 run속성을 result에 할당함
+      const { run: result } = await executeCode(language, sourceCode);
+      setOutput(result.output);
     } catch (error) {}
   };
 
@@ -39,7 +43,7 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
         borderRadius={4}
         borderColor="#333"
       >
-        Here's an result.
+        {output ? output : "코드를 실행하려면 'Run Code' 버튼을 누르세요."}
       </Box>
     </Box>
   );
