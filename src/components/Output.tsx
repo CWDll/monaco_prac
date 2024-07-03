@@ -9,7 +9,7 @@ interface OutputProps {
 }
 
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
-  const [output, setOutput] = useState<string | null>(null);
+  const [output, setOutput] = useState<string[] | null>(null);
   const [isloading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const toast = useToast();
@@ -28,7 +28,8 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       setIsLoading(true);
       // 결과값의 run속성을 result에 할당함
       const { run: result } = await executeCode(language, sourceCode);
-      setOutput(result.output);
+      // 결과값에 줄바꿈이 적용되지 않고 '\n'이 나오므로, split을 사용해 줄바꿈을 적용하기 위해 나눔
+      setOutput(result.output.split("\n"));
       result.stderr ? setIsError(true) : setIsError(false);
     } catch (error: Error | any) {
       console.error(error);
@@ -66,7 +67,13 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
         borderRadius={4}
         borderColor={isError ? "red.500" : "#333"}
       >
-        {output ? output : "코드를 실행하려면 'Run Code' 버튼을 누르세요."}
+        {output
+          ? output.map((line, index) => (
+              <Text key={index} whiteSpace="pre-wrap">
+                {line}
+              </Text>
+            ))
+          : "코드를 실행하려면 'Run Code' 버튼을 누르세요."}
       </Box>
     </Box>
   );
