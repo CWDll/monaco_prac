@@ -7,20 +7,32 @@ import LanguateSelector from "./LanguateSelector";
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>();
+  const [language, setLanguage] = useState<string>("javascript");
 
   const handleEditorMount: OnMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
   };
 
+  const onSelect = (selectedLanguage: string) => {
+    setLanguage(selectedLanguage);
+    if (editorRef.current) {
+      monaco.editor.setModelLanguage(
+        editorRef.current.getModel()!,
+        selectedLanguage
+      );
+    }
+  };
+
   return (
     <Box>
-      <LanguateSelector />
+      <LanguateSelector language={language} onSelect={onSelect} />
       <Editor
         height="75vh"
         theme="vs-dark"
         defaultLanguage="javascript"
         defaultValue="// some comment"
+        language={language}
         onMount={handleEditorMount}
         value={value}
         onChange={(val) => setValue(val || "")}
