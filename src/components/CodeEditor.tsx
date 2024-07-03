@@ -3,6 +3,7 @@ import { Editor, OnMount } from "@monaco-editor/react";
 import React, { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
 import LanguateSelector from "./LanguateSelector";
+import { CODE_SNIPPETS } from "../constants";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -16,6 +17,7 @@ const CodeEditor: React.FC = () => {
 
   const onSelect = (selectedLanguage: string) => {
     setLanguage(selectedLanguage);
+    setValue(CODE_SNIPPETS[selectedLanguage] || "");
     if (editorRef.current) {
       monaco.editor.setModelLanguage(
         editorRef.current.getModel()!,

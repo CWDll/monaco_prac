@@ -7,7 +7,7 @@ export const LANGUAGE_VERSION: { [key: string]: string } = {
   php: "8.2.3",
 };
 
-export const CODE_SNIPPETS = {
+export const CODE_SNIPPETS: { [key: string]: string } = {
   javascript: `function greet(name) {\n\tconsole.log("Hello, " + name + "!");\n}\n\n\ngreet("Alex");\n`,
   typescript: `type Params = {\n\tname: string;\n};\n\n\nfunction greet(data: Params) {\n\tconsole.log("Hello, " + data.name + "!");\n}\n\ngreet({ name: "Alex" });\n`,
   python: `def greet(name):\n\tprint("Hello, " + name + "!")\n\n\ngreet("Alex")\n`,
