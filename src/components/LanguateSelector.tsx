@@ -7,9 +7,9 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { LANGUAGE_VERSION } from "../constants";
+import { LANGUAGE_VERSIONS } from "../constants";
 
-const languages = Object.entries(LANGUAGE_VERSION) as [string, string][];
+const languages = Object.entries(LANGUAGE_VERSIONS) as [string, string][];
 
 // props 타입 정의
 interface LanguateSelectorProps {
