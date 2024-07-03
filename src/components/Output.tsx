@@ -10,6 +10,7 @@ interface OutputProps {
 
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
   const [output, setOutput] = useState<string | null>(null);
+  const [isloading, setIsLoading] = useState<boolean>(false);
 
   const runCode = async () => {
     // null값인지를 먼저 체크해줘야 getValue()를 사용할 수 있음.
@@ -22,10 +23,14 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
     if (!sourceCode) return;
 
     try {
+      setIsLoading(true);
       // 결과값의 run속성을 result에 할당함
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output);
-    } catch (error) {}
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -33,7 +38,13 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       <Text mb={2} fontSize="lg">
         OutPut
       </Text>
-      <Button variant="outline" colorScheme="green" mb={4} onClick={runCode}>
+      <Button
+        variant="outline"
+        colorScheme="green"
+        mb={4}
+        onClick={runCode}
+        isLoading={isloading}
+      >
         Run Code
       </Button>
       <Box
