@@ -17,6 +17,9 @@ interface LanguateSelectorProps {
   onSelect: (language: string) => void;
 }
 
+// 색깔 명 지정
+const ACTIVE_COLOR = "blue.400";
+
 const LanguateSelector: React.FC<LanguateSelectorProps> = ({
   language,
   onSelect,
@@ -33,11 +36,11 @@ const LanguateSelector: React.FC<LanguateSelectorProps> = ({
           {languages.map(([lang, version]) => (
             <MenuItem
               key={lang}
-              color={lang === language ? "blue.400" : ""}
-              bg={lang === language ? "#gray.700" : "transparent"}
+              color={lang === language ? ACTIVE_COLOR : ""}
+              bg={lang === language ? "#gray.900" : "transparent"}
               _hover={{
-                color: "blue.400",
-                bg: "#gray.700",
+                color: ACTIVE_COLOR,
+                bg: "#gray.900",
               }}
               onClick={() => {
                 onSelect(lang);
@@ -46,7 +49,7 @@ const LanguateSelector: React.FC<LanguateSelectorProps> = ({
               {lang}
               &nbsp;
               <Text as="span" fontSize="sm" color="gray.600">
-                {version}
+                ({version})
               </Text>
             </MenuItem>
           ))}

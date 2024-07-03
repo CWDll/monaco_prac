@@ -32,8 +32,7 @@ const CodeEditor: React.FC = () => {
       <Editor
         height="75vh"
         theme="vs-dark"
-        defaultLanguage="javascript"
-        defaultValue="// some comment"
+        defaultValue={CODE_SNIPPETS[language]}
         language={language}
         onMount={handleEditorMount}
         value={value}
