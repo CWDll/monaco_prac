@@ -23,19 +23,20 @@ const checkRuntimes = async () => {
 
 checkRuntimes();
 */
+
 export const executeCode = async (language: string, sourceCode: string) => {
-  const fileName = language === "typescript" ? "main.ts" : `main.${language}`;
+  let files: { name?: string; content: string }[] = [{ content: sourceCode }];
+
+  if (language === "typescript") {
+    files = [{ name: "main.ts", content: sourceCode }];
+  }
+
   const response = await API.post("/execute", {
     language: language,
     version: LANGUAGE_VERSIONS[language],
-    runtime: "deno",
-    files: [
-      {
-        name: fileName,
-        content: sourceCode,
-      },
-    ],
+    runtime: language === "typescript" ? "deno" : undefined,
+    files: files,
   });
-  console.log("fileName: ", fileName);
+
   return response.data;
 };
