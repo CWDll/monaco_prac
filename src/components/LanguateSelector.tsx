@@ -22,22 +22,28 @@ const LanguateSelector: React.FC<LanguateSelectorProps> = ({
   onSelect,
 }) => {
   return (
-    <Box>
+    <Box ml={2} mb={4}>
       <Text mb={2} fontSize="lg">
         Language:
       </Text>
       <Menu>
         {/* 현재 기본 언어를 javascript로 설정해두었기에 그대로 씀 */}
         <MenuButton as={Button}>{language}</MenuButton>
-        <MenuList zIndex={1}>
-          {languages.map(([language, version]) => (
+        <MenuList zIndex={1} bg="#110c1b">
+          {languages.map(([lang, version]) => (
             <MenuItem
-              key={language}
+              key={lang}
+              color={lang === language ? "blue.400" : ""}
+              bg={lang === language ? "#gray.700" : "transparent"}
+              _hover={{
+                color: "blue.400",
+                bg: "#gray.700",
+              }}
               onClick={() => {
-                onSelect(language);
+                onSelect(lang);
               }}
             >
-              {language}
+              {lang}
               &nbsp;
               <Text as="span" fontSize="sm" color="gray.600">
                 {version}
