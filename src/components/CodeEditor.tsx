@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { Editor, OnMount } from "@monaco-editor/react";
 import React, { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
+import LanguateSelector from "./LanguateSelector";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
@@ -14,6 +15,7 @@ const CodeEditor: React.FC = () => {
 
   return (
     <Box>
+      <LanguateSelector />
       <Editor
         height="75vh"
         theme="vs-dark"

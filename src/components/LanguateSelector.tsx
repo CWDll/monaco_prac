@@ -9,7 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { LANGUAGE_VERSION } from "../constants";
 
-const Language = Object.entries(LANGUAGE_VERSION) as [string, string][];
+const languages = Object.entries(LANGUAGE_VERSION) as [string, string][];
+console.log(languages);
 
 const LanguateSelector = () => {
   return (
@@ -18,13 +19,18 @@ const LanguateSelector = () => {
         Language:
       </Text>
       <Menu>
-        <MenuButton as={Button}>Actions</MenuButton>
-        <MenuList>
-          <MenuItem>Download</MenuItem>
-          <MenuItem>Create a Copy</MenuItem>
-          <MenuItem>Mark as Draft</MenuItem>
-          <MenuItem>Delete</MenuItem>
-          <MenuItem>Attend a Workshop</MenuItem>
+        {/* 현재 기본 언어를 javascript로 설정해두었기에 그대로 씀 */}
+        <MenuButton as={Button}>javascript</MenuButton>
+        <MenuList zIndex={1}>
+          {languages.map(([language, version]) => (
+            <MenuItem key={language}>
+              {language}
+              &nbsp;
+              <Text as="span" fontSize="sm" color="gray.600">
+                {version}
+              </Text>
+            </MenuItem>
+          ))}
         </MenuList>
       </Menu>
     </Box>
