@@ -1,6 +1,7 @@
 export const LANGUAGE_VERSIONS: { [key: string]: string } = {
   javascript: "18.15.0",
-  typescript: "5.0.3",
+  // typescript: "5.5.3",
+  typescript: "1.32.3", // deno 런타임 버전으로 변경
   python: "3.10.0",
   java: "15.0.2",
   csharp: "6.12.0",
