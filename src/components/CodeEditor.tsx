@@ -19,6 +19,7 @@ const CodeEditor: React.FC = () => {
   const onSelect = (selectedLanguage: string) => {
     setLanguage(selectedLanguage);
     setValue(CODE_SNIPPETS[selectedLanguage] || "");
+
     if (editorRef.current) {
       monaco.editor.setModelLanguage(
         editorRef.current.getModel()!,

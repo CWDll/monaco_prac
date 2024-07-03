@@ -31,6 +31,7 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       // 결과값에 줄바꿈이 적용되지 않고 '\n'이 나오므로, split을 사용해 줄바꿈을 적용하기 위해 나눔
       setOutput(result.output.split("\n"));
       result.stderr ? setIsError(true) : setIsError(false);
+      console.log(result.stderr);
     } catch (error: Error | any) {
       console.error(error);
       toast({
