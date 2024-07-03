@@ -11,6 +11,7 @@ interface OutputProps {
 const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
   const [output, setOutput] = useState<string | null>(null);
   const [isloading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const toast = useToast();
 
   const runCode = async () => {
@@ -28,6 +29,7 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       // 결과값의 run속성을 result에 할당함
       const { run: result } = await executeCode(language, sourceCode);
       setOutput(result.output);
+      result.stderr ? setIsError(true) : setIsError(false);
     } catch (error: Error | any) {
       console.error(error);
       toast({
@@ -59,9 +61,10 @@ const Output: React.FC<OutputProps> = ({ editorRef, language }) => {
       <Box
         height="75vh"
         p={2}
+        color={isError ? "red.500" : "white"}
         border="1px solid"
         borderRadius={4}
-        borderColor="#333"
+        borderColor={isError ? "red.500" : "#333"}
       >
         {output ? output : "코드를 실행하려면 'Run Code' 버튼을 누르세요."}
       </Box>
