@@ -1,44 +1,94 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, VStack, Textarea, Heading } from "@chakra-ui/react";
 
 const DiffCodeEditor = () => {
   const diffEditorRef = useRef<monaco.editor.IStandaloneDiffEditor | null>(
     null
   );
+  const [originalOutput, setOriginalOutput] = useState("");
+  const [modifiedOutput, setModifiedOutput] = useState("");
+
   const handleEditorDidMount = (
     editor: monaco.editor.IStandaloneDiffEditor
   ) => {
     diffEditorRef.current = editor;
   };
 
-  //  비교하는 각 코드를 각자 실행하는 코드(run API 추가 필요)
-  function runOriginalCode() {
+  // 원본 코드를 실행하는 함수
+  const runOriginalCode = () => {
     const originalCode = diffEditorRef.current?.getOriginalEditor().getValue();
-    // 실행 로직 추가
-    console.log("Original Code Output:", originalCode);
-  }
+    if (originalCode) {
+      try {
+        // eslint-disable-next-line no-eval
+        const output = eval(originalCode);
+        setOriginalOutput(output);
+      } catch (error: Error | any) {
+        setOriginalOutput(`Error: ${error.message}`);
+      }
+    }
+  };
 
-  function runModifiedCode() {
+  // 수정된 코드를 실행하는 함수
+  const runModifiedCode = () => {
     const modifiedCode = diffEditorRef.current?.getModifiedEditor().getValue();
-    // 실행 로직 추가
-    console.log("Modified Code Output:", modifiedCode);
-  }
+    if (modifiedCode) {
+      try {
+        // eslint-disable-next-line no-eval
+        const output = eval(modifiedCode);
+        setModifiedOutput(output);
+      } catch (error: Error | any) {
+        setModifiedOutput(`Error: ${error.message}`);
+      }
+    }
+  };
 
   return (
-    <Box>
+    <Box p={4}>
+      <Heading as="h1" mb={4} color="teal.500">
+        Diff Code Editor
+      </Heading>
       <DiffEditor
-        height="95vh"
-        width="70vw"
-        original="// Original code here"
-        modified="// Modified code here"
+        height="50vh"
+        width="80vw"
+        original={`function add(a, b) {
+  return a + b;
+}
+
+console.log(add(2, 3));`}
+        modified={`function add(a, b, c = 0) {
+  return a + b + c;
+}
+
+console.log(add(2, 3, 4));`}
         language="javascript"
         onMount={handleEditorDidMount}
       />
-      <Button onClick={runOriginalCode}>Run Original Code</Button>
-      &nbsp;
-      <Button onClick={runModifiedCode}>Run Modified Code</Button>
+      <VStack mt={4} spacing={4} align="stretch">
+        <Button colorScheme="teal" onClick={runOriginalCode}>
+          Run Original Code
+        </Button>
+        <Textarea
+          value={originalOutput}
+          placeholder="Original Code Output"
+          isReadOnly
+          size="sm"
+          bg="gray.800"
+          color="white"
+        />
+        <Button colorScheme="teal" onClick={runModifiedCode}>
+          Run Modified Code
+        </Button>
+        <Textarea
+          value={modifiedOutput}
+          placeholder="Modified Code Output"
+          isReadOnly
+          size="sm"
+          bg="gray.800"
+          color="white"
+        />
+      </VStack>
     </Box>
   );
 };
