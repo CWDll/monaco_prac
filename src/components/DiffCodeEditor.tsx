@@ -94,6 +94,7 @@ const DiffCodeEditor = () => {
       <DiffEditor
         height="50vh"
         width="80vw"
+        theme="vs-dark"
         original={originalCode}
         modified={modifiedCode}
         language="javascript"
