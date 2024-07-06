@@ -13,6 +13,18 @@ const DiffCodeEditor = () => {
   const [hasRunOriginal, setHasRunOriginal] = useState<boolean>(false);
   const [hasRunModified, setHasRunModified] = useState<boolean>(false);
 
+  // 내부에서 실행하는 원본 코드(Read-Only)
+  const originalCode = `function add(a, b) {
+    return a + b; 
+  }
+  console.log(add(10, 110));`;
+
+  // 내부에서 실행하는 수정 가능한 코드(Read-Writable)
+  const modifiedCode = `function add(a, b, c = 0) {
+    return a + b + c;
+  }
+  console.log(add(10, 20, 90));`;
+
   const handleEditorDidMount = (
     editor: monaco.editor.IStandaloneDiffEditor
   ) => {
@@ -82,14 +94,8 @@ const DiffCodeEditor = () => {
       <DiffEditor
         height="50vh"
         width="80vw"
-        original={`function add(a, b) {
-  return a + b; 
-}
-console.log(add(10, 110));`}
-        modified={`function add(a, b, c = 0) {
-  return a + b + c;
-}
-console.log(add(10, 20, 90));`}
+        original={originalCode}
+        modified={modifiedCode}
         language="javascript"
         onMount={handleEditorDidMount}
       />
