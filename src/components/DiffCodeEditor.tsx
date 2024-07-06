@@ -16,17 +16,32 @@ const DiffCodeEditor = () => {
     diffEditorRef.current = editor;
   };
 
+  // 콘솔 출력을 캡처하는 함수
+  const captureConsoleOutput = (code: string) => {
+    const consoleOutput: string[] = [];
+    const originalConsoleLog = console.log;
+
+    console.log = (message: any) => {
+      consoleOutput.push(message);
+    };
+
+    try {
+      eval(code);
+    } catch (error: any) {
+      consoleOutput.push(`Error: ${error.message}`);
+    }
+
+    console.log = originalConsoleLog;
+
+    return consoleOutput.join("\n");
+  };
+
   // 원본 코드를 실행하는 함수
   const runOriginalCode = () => {
     const originalCode = diffEditorRef.current?.getOriginalEditor().getValue();
     if (originalCode) {
-      try {
-        // eslint-disable-next-line no-eval
-        const output = eval(originalCode);
-        setOriginalOutput(output);
-      } catch (error: Error | any) {
-        setOriginalOutput(`Error: ${error.message}`);
-      }
+      const output = captureConsoleOutput(originalCode);
+      setOriginalOutput(output);
     }
   };
 
@@ -34,13 +49,8 @@ const DiffCodeEditor = () => {
   const runModifiedCode = () => {
     const modifiedCode = diffEditorRef.current?.getModifiedEditor().getValue();
     if (modifiedCode) {
-      try {
-        // eslint-disable-next-line no-eval
-        const output = eval(modifiedCode);
-        setModifiedOutput(output);
-      } catch (error: Error | any) {
-        setModifiedOutput(`Error: ${error.message}`);
-      }
+      const output = captureConsoleOutput(modifiedCode);
+      setModifiedOutput(output);
     }
   };
 
@@ -53,15 +63,15 @@ const DiffCodeEditor = () => {
         height="50vh"
         width="80vw"
         original={`function add(a, b) {
-  return a + b;
+  return a + b; 
 }
-
-console.log(add(2, 3));`}
+console.log(add(2, 3));
+console.log(add(10, 110));`}
         modified={`function add(a, b, c = 0) {
   return a + b + c;
 }
-
-console.log(add(2, 3, 4));`}
+console.log(add(2, 3, 4));
+console.log(add(1, 1, 1));`}
         language="javascript"
         onMount={handleEditorDidMount}
       />
@@ -76,6 +86,7 @@ console.log(add(2, 3, 4));`}
           size="sm"
           bg="gray.800"
           color="white"
+          resize="none"
         />
         <Button colorScheme="teal" onClick={runModifiedCode}>
           Run Modified Code
@@ -87,6 +98,7 @@ console.log(add(2, 3, 4));`}
           size="sm"
           bg="gray.800"
           color="white"
+          resize="none"
         />
       </VStack>
     </Box>
