@@ -11,7 +11,8 @@ const DiffCodeEditor = () => {
   };
   return (
     <DiffEditor
-      height="90vh"
+      height="95vh"
+      width="70vw"
       original="// Original code here"
       modified="// Modified code here"
       language="javascript"

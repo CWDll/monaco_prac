@@ -14,12 +14,12 @@ const Sidebar = () => {
     <Box
       bg="gray.800"
       color="white"
-      w="250px"
+      maxW="20vw"
+      w="15vw"
       h="100vh"
-      position="fixed"
+      position="relative"
       top="0"
       left="0"
-      paddingTop="20px"
     >
       <Flex direction="column" align="flex-start" padding="10px">
         <Link href="/" mb="10px" display="flex" alignItems="center">
