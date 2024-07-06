@@ -1,14 +1,17 @@
 import React, { useRef, useState } from "react";
 import { DiffEditor } from "@monaco-editor/react";
 import * as monaco from "monaco-editor";
-import { Box, Button, VStack, Textarea, Heading } from "@chakra-ui/react";
+import { Box, Button, VStack, Textarea, Heading, Text } from "@chakra-ui/react";
 
 const DiffCodeEditor = () => {
   const diffEditorRef = useRef<monaco.editor.IStandaloneDiffEditor | null>(
     null
   );
-  const [originalOutput, setOriginalOutput] = useState("");
-  const [modifiedOutput, setModifiedOutput] = useState("");
+  const [originalOutput, setOriginalOutput] = useState<string>("");
+  const [modifiedOutput, setModifiedOutput] = useState<string>("");
+  const [isSameResult, setIsSameResult] = useState<boolean>(false);
+  const [hasRunOriginal, setHasRunOriginal] = useState<boolean>(false);
+  const [hasRunModified, setHasRunModified] = useState<boolean>(false);
 
   const handleEditorDidMount = (
     editor: monaco.editor.IStandaloneDiffEditor
@@ -26,6 +29,7 @@ const DiffCodeEditor = () => {
     };
 
     try {
+      // eslint-disable-next-line no-eval
       eval(code);
     } catch (error: any) {
       consoleOutput.push(`Error: ${error.message}`);
@@ -42,6 +46,10 @@ const DiffCodeEditor = () => {
     if (originalCode) {
       const output = captureConsoleOutput(originalCode);
       setOriginalOutput(output);
+      setHasRunOriginal(true);
+      if (hasRunModified) {
+        CheckResult(output, modifiedOutput);
+      }
     }
   };
 
@@ -51,6 +59,18 @@ const DiffCodeEditor = () => {
     if (modifiedCode) {
       const output = captureConsoleOutput(modifiedCode);
       setModifiedOutput(output);
+      setHasRunModified(true);
+      if (hasRunOriginal) {
+        CheckResult(originalOutput, output);
+      }
+    }
+  };
+
+  const CheckResult = (originalOutput: string, modifiedOutput: string) => {
+    if (originalOutput === modifiedOutput) {
+      setIsSameResult(true);
+    } else {
+      setIsSameResult(false);
     }
   };
 
@@ -65,13 +85,11 @@ const DiffCodeEditor = () => {
         original={`function add(a, b) {
   return a + b; 
 }
-console.log(add(2, 3));
 console.log(add(10, 110));`}
         modified={`function add(a, b, c = 0) {
   return a + b + c;
 }
-console.log(add(2, 3, 4));
-console.log(add(1, 1, 1));`}
+console.log(add(10, 20, 90));`}
         language="javascript"
         onMount={handleEditorDidMount}
       />
@@ -100,6 +118,13 @@ console.log(add(1, 1, 1));`}
           color="white"
           resize="none"
         />
+        {hasRunOriginal &&
+          hasRunModified &&
+          (isSameResult ? (
+            <Text color="green.500">Same Result</Text>
+          ) : (
+            <Text color="red.500">Different Result</Text>
+          ))}
       </VStack>
     </Box>
   );
