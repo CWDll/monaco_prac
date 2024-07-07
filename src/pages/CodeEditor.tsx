@@ -2,9 +2,9 @@ import { Box, HStack } from "@chakra-ui/react";
 import { Editor, OnMount } from "@monaco-editor/react";
 import React, { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
-import LanguateSelector from "./LanguateSelector";
+import LanguateSelector from "../components/LanguateSelector";
 import { CODE_SNIPPETS } from "../constants";
-import Output from "./Output";
+import Output from "../components/Output";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);

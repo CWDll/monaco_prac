@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { Routes, Route, Link } from "react-router-dom";
-import CodeEditor from "./components/CodeEditor";
-import TAPage from "./pages/TAPage";
+import CodeEditor from "./pages/CodeEditor";
+import TADiffEditPage from "./pages/TADiffEditPage";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
       </Flex>
       <Routes>
         <Route path="/code-editor" element={<CodeEditor />} />
-        <Route path="/ta-page" element={<TAPage />} />
+        <Route path="/ta-page" element={<TADiffEditPage />} />
       </Routes>
     </Box>
   );
