@@ -7,6 +7,8 @@ import {
   Button,
   Text,
   Avatar,
+  Skeleton,
+  Spinner,
 } from "@chakra-ui/react";
 
 interface Message {
@@ -17,12 +19,14 @@ interface Message {
 const Chatting: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSend = () => {
     if (inputValue.trim() === "") return;
 
     const newMessage: Message = { sender: "user", text: inputValue };
     setMessages([...messages, newMessage]);
+    setLoading(true);
 
     // Simulate bot response
     setTimeout(() => {
@@ -31,7 +35,8 @@ const Chatting: React.FC = () => {
         text: "This is a bot response",
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
-    }, 1000);
+      setLoading(false);
+    }, 3000);
 
     setInputValue("");
   };
@@ -70,6 +75,24 @@ const Chatting: React.FC = () => {
               {message.sender === "user" && <Avatar name="User" size="sm" />}
             </HStack>
           ))}
+          {loading && (
+            <HStack justifyContent="flex-start" mb={2}>
+              <Avatar name="Bot" size="sm" />
+              <Box
+                bg="gray.600"
+                color="white"
+                px={4}
+                py={2}
+                rounded="md"
+                maxW="80%"
+              >
+                <HStack>
+                  <Skeleton height="20px" width="100px" />
+                  <Spinner size="sm" />
+                </HStack>
+              </Box>
+            </HStack>
+          )}
         </Box>
         <HStack>
           <Input
