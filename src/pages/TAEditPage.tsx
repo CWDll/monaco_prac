@@ -13,7 +13,7 @@ const TAEditPage = () => {
     <Flex direction="row" padding={0}>
       <Flex direction="column" padding={6} pt={0} pb={0}>
         <UnorderedList>
-          <ListItem>
+          <ListItem color={fileName === "script.js" ? "teal.500" : "grey.200"}>
             <button
               disabled={fileName === "script.js"}
               onClick={() => setFileName("script.js")}
@@ -21,7 +21,7 @@ const TAEditPage = () => {
               script.js
             </button>
           </ListItem>
-          <ListItem>
+          <ListItem color={fileName === "style.css" ? "teal.500" : "grey.200"}>
             <button
               disabled={fileName === "style.css"}
               onClick={() => setFileName("style.css")}
@@ -29,7 +29,7 @@ const TAEditPage = () => {
               style.css
             </button>
           </ListItem>
-          <ListItem>
+          <ListItem color={fileName === "index.html" ? "teal.500" : "grey.200"}>
             <button
               disabled={fileName === "index.html"}
               onClick={() => setFileName("index.html")}
