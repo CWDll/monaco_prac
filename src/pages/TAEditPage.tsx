@@ -3,6 +3,7 @@ import { Flex, UnorderedList, ListItem } from "@chakra-ui/react";
 
 import files, { FileType, FilesType } from "../files";
 import MultiModelEditor from "../components/MultiModelEditor";
+import Chatting from "../components/Chatting";
 
 const TAEditPage = () => {
   const [fileName, setFileName] = useState<keyof FilesType>("script.js");
@@ -39,6 +40,7 @@ const TAEditPage = () => {
         </UnorderedList>
       </Flex>
       <MultiModelEditor selectedFile={file} />
+      <Chatting />
     </Flex>
   );
 };

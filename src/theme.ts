@@ -5,5 +5,13 @@ const theme = extendBaseTheme({
     initialColorMode: "dark",
     useSystemColorMode: false,
   },
+  styles: {
+    global: {
+      body: {
+        bg: "#0f0a19",
+        color: "gray.200",
+      },
+    },
+  },
 });
 export default theme;
