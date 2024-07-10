@@ -210,7 +210,7 @@ export type FilesType = {
   [key: string]: FileType;
 };
 
-const files = {
+const files: FilesType = {
   "script.js": {
     name: "script.js",
     language: "javascript",

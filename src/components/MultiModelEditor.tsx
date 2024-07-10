@@ -6,7 +6,6 @@ import { Flex } from "@chakra-ui/react";
 function MultiModelEditor() {
   const [fileName, setFileName] = useState<keyof FilesType>("script.js");
 
-  // Import된 files 객체를 사용합니다.
   const file: FileType = files[fileName];
 
   return (
