@@ -41,6 +41,13 @@ const Chatting: React.FC = () => {
     setInputValue("");
   };
 
+  // 엔터를 통한 채팅 전송
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
+
   return (
     <Box
       w="full"
@@ -100,12 +107,17 @@ const Chatting: React.FC = () => {
             placeholder="Type a message..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
             bg="gray.600"
             border="none"
             _focus={{ borderColor: "teal.500" }}
             height="5vh"
           />
-          <Button colorScheme="teal" onClick={handleSend}>
+          <Button
+            colorScheme="teal"
+            onClick={handleSend}
+            _hover={{ color: "teal.500" }}
+          >
             Send
           </Button>
         </HStack>

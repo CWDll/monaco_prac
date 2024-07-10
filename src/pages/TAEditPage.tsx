@@ -5,7 +5,7 @@ import files, { FileType, FilesType } from "../files";
 import MultiModelEditor from "../components/MultiModelEditor";
 import Chatting from "../components/Chatting";
 
-const TAEditPage = () => {
+const TAEditPage: React.FC = () => {
   const [fileName, setFileName] = useState<keyof FilesType>("script.js");
   const file: FileType = files[fileName];
 
