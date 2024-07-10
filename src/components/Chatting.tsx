@@ -36,7 +36,7 @@ const Chatting: React.FC = () => {
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
       setLoading(false);
-    }, 3000);
+    }, 2000);
 
     setInputValue("");
   };
@@ -52,7 +52,7 @@ const Chatting: React.FC = () => {
       boxShadow="lg"
     >
       <VStack spacing={4} align="stretch">
-        <Box h="60vh" overflowY="auto" bg="gray.700" p={4} rounded="md">
+        <Box h="80vh" overflowY="auto" bg="gray.700" p={4} rounded="md">
           {messages.map((message, index) => (
             <HStack
               key={index}
@@ -87,8 +87,8 @@ const Chatting: React.FC = () => {
                 maxW="80%"
               >
                 <HStack>
-                  <Skeleton height="20px" width="100px" />
-                  <Spinner size="sm" />
+                  <Skeleton height="20px" width="10vw" />
+                  <Spinner size={"lg"} />
                 </HStack>
               </Box>
             </HStack>
@@ -103,6 +103,7 @@ const Chatting: React.FC = () => {
             bg="gray.600"
             border="none"
             _focus={{ borderColor: "teal.500" }}
+            height="5vh"
           />
           <Button colorScheme="teal" onClick={handleSend}>
             Send
