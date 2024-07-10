@@ -8,25 +8,29 @@ import TAEditPage from "./pages/TAEditPage";
 function App() {
   return (
     <Box minH="100vh" bg="#0f0a19" color="gray.500">
-      <Box>sd</Box>
-      <Flex justifyContent="center" py={4}>
-        <Link to="/code-editor">
-          <Button mx={2} colorScheme="teal">
-            Code Editor
-          </Button>
+      <Flex justifyContent="space-between" alignItems="center" py={4} px={6}>
+        <Link to="/">
+          <Button colorScheme="teal">Home</Button>
         </Link>
-        <p>/</p>
-        <Link to="/ta-diffEditPage">
-          <Button mx={2} colorScheme="teal">
-            TA Diff Edit Page
-          </Button>
-        </Link>
-        <p>/</p>
-        <Link to="/ta-editPage">
-          <Button mx={2} colorScheme="teal">
-            TA Edit Page
-          </Button>
-        </Link>
+        <Flex justifyContent="center" alignItems="center" flex="1">
+          <Link to="/code-editor">
+            <Button mx={2} colorScheme="teal">
+              Code Editor
+            </Button>
+          </Link>
+          <p>/</p>
+          <Link to="/ta-diffEditPage">
+            <Button mx={2} colorScheme="teal">
+              TA Diff Edit Page
+            </Button>
+          </Link>
+          <p>/</p>
+          <Link to="/ta-editPage">
+            <Button mx={2} colorScheme="teal">
+              TA Edit Page
+            </Button>
+          </Link>
+        </Flex>
       </Flex>
       <Routes>
         <Route path="/" element={<Home />} />
