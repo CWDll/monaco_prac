@@ -13,7 +13,7 @@ function App() {
 
   return (
     <Box minH="100vh" bg="#0f0a19" color="gray.500">
-      <Flex justifyContent="space-beteen" alignItems="center" py={4} px={6}>
+      <Flex justifyContent="space-between" alignItems="center" py={4} px={6}>
         <Link to="/">
           <Button color={getButtonColorScheme("/")}>Home</Button>
         </Link>

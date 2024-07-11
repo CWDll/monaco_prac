@@ -91,15 +91,20 @@ const DiffCodeEditor = () => {
       <Heading as="h1" mb={4} color="teal.500">
         Diff Code Editor
       </Heading>
-      <DiffEditor
-        height="50vh"
-        width="80vw"
-        theme="vs-dark"
-        original={originalCode}
-        modified={modifiedCode}
-        language="javascript"
-        onMount={handleEditorDidMount}
-      />
+      <Box
+        height={{ base: "40vh", md: "50vh" }}
+        width={{ base: "100vw", md: "80vw" }}
+      >
+        <DiffEditor
+          height={"100%"}
+          width={"100%"}
+          theme="vs-dark"
+          original={originalCode}
+          modified={modifiedCode}
+          language="javascript"
+          onMount={handleEditorDidMount}
+        />
+      </Box>
       <VStack mt={4} spacing={4} align="stretch">
         <Button colorScheme="teal" onClick={runOriginalCode}>
           Run Original Code

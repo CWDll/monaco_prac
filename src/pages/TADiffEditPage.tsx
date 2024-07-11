@@ -1,13 +1,17 @@
 import React from "react";
-import DiffCodeEditor from "../components/DiffCodeEditor";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
-import { Box, Flex } from "@chakra-ui/react";
+import DiffCodeEditor from "../components/DiffCodeEditor";
 
 const TAPage = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
-    <Flex direction="row" padding={0}>
-      <Sidebar />
-      <DiffCodeEditor />
+    <Flex direction={{ base: "column", md: "row" }} minH="100vh">
+      <Sidebar isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+      <Flex flex="1" p={4}>
+        <DiffCodeEditor />
+      </Flex>
     </Flex>
   );
 };
