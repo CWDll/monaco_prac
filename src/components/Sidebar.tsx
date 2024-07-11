@@ -7,7 +7,6 @@ import {
   Text,
   Drawer,
   DrawerContent,
-  useDisclosure,
   DrawerOverlay,
   DrawerCloseButton,
   DrawerHeader,
@@ -21,7 +20,13 @@ import {
   FiSettings,
 } from "react-icons/fi";
 
-const Sidebar = ({ isOpen, onClose, onOpen }) => {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, onOpen }) => {
   return (
     <>
       <Box
@@ -58,7 +63,7 @@ const Sidebar = ({ isOpen, onClose, onOpen }) => {
           </Link>
         </Flex>
       </Box>
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
