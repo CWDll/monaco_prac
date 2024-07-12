@@ -4,16 +4,25 @@ import React, { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
 import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
-import Output from "../components/Output";
+import Questions from "../components/Questions";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>();
   const [language, setLanguage] = useState<string>("javascript");
+  const [highlightedText, setHighlightedText] = useState<string | null>(null);
 
   const handleEditorMount: OnMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
+    editor.onMouseUp(() => {
+      const selectedText = window.getSelection()?.toString();
+      if (selectedText) {
+        setHighlightedText(selectedText);
+      } else {
+        setHighlightedText(null);
+      }
+    });
   };
 
   const onSelect = (selectedLanguage: string) => {
@@ -44,7 +53,11 @@ const CodeEditor: React.FC = () => {
           />
         </Box>
 
-        <Output editorRef={editorRef} language={language} />
+        <Questions
+          editorRef={editorRef}
+          language={language}
+          highlightedText={highlightedText}
+        />
       </HStack>
     </Box>
   );
