@@ -2,7 +2,7 @@ import { Box, HStack } from "@chakra-ui/react";
 import { Editor, OnMount } from "@monaco-editor/react";
 import React, { useState, useRef } from "react";
 import * as monaco from "monaco-editor";
-import LanguateSelector from "../components/LanguateSelector";
+import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
 import Output from "../components/Output";
 
@@ -32,7 +32,7 @@ const CodeEditor: React.FC = () => {
     <Box>
       <HStack spacing={4}>
         <Box w="50%">
-          <LanguateSelector language={language} onSelect={onSelect} />
+          <LanguageSelector language={language} onSelect={onSelect} />
           <Editor
             height="75vh"
             theme="vs-dark"

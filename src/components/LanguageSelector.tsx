@@ -11,7 +11,7 @@ import { LANGUAGE_VERSIONS } from "../constants";
 
 const languages = Object.entries(LANGUAGE_VERSIONS) as [string, string][];
 
-// props 타입 정의
+// props 타입 정의₩
 interface LanguateSelectorProps {
   language: string;
   onSelect: (language: string) => void;
@@ -20,7 +20,7 @@ interface LanguateSelectorProps {
 // 색깔 명 지정
 const ACTIVE_COLOR = "blue.400";
 
-const LanguateSelector: React.FC<LanguateSelectorProps> = ({
+const LanguageSelector: React.FC<LanguateSelectorProps> = ({
   language,
   onSelect,
 }) => {
@@ -59,4 +59,4 @@ const LanguateSelector: React.FC<LanguateSelectorProps> = ({
   );
 };
 
-export default LanguateSelector;
+export default LanguageSelector;
