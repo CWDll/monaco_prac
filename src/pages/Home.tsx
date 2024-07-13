@@ -1,5 +1,6 @@
 // src/App.tsx
 import React, { useEffect } from "react";
+import { Text } from "@chakra-ui/react";
 import Container from "../components/widgets/Containert";
 import Column from "../components/widgets/Column";
 import Row from "../components/widgets/Row";
@@ -8,7 +9,7 @@ import Stack from "../components/widgets/Stack";
 
 const Home: React.FC = () => {
   const [introText, setIntroText] = React.useState<string>("");
-  const fullIntroText = "플러터 위젯 테스트중 !";
+  const fullIntroText = " 플러터 위젯 테스트중 !";
 
   useEffect(() => {
     let count = 0;
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
         setIntroText("");
       } else {
         setIntroText((prev) => prev + fullIntroText[count]);
+
         ++count;
       }
     }, 200);
@@ -27,7 +29,9 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>{introText}</h1>
+      <Text as="mark" color="tomato" fontSize="xl">
+        {introText}
+      </Text>
 
       <h2>Column Example</h2>
       <Container
