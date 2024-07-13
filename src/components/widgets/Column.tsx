@@ -1,12 +1,26 @@
 import React, { ReactNode } from "react";
-import { StyledColumn } from "./style";
+import { FlexContainer } from "./style";
 
 interface ColumnProps {
+  justifyContent?: string;
+  alignItems?: string;
   children: ReactNode;
 }
 
-const Column: React.FC<ColumnProps> = ({ children }) => {
-  return <StyledColumn>{children}</StyledColumn>;
+const Column: React.FC<ColumnProps> = ({
+  justifyContent,
+  alignItems,
+  children,
+}) => {
+  return (
+    <FlexContainer
+      flexDirection="column"
+      justifyContent={justifyContent}
+      alignItems={alignItems}
+    >
+      {children}
+    </FlexContainer>
+  );
 };
 
 export default Column;

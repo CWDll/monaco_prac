@@ -1,17 +1,20 @@
 import styled from "styled-components";
 
-// Column
-export const StyledColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+// Column, Row
+interface FlexProps {
+  justifyContent?: string;
+  alignItems?: string;
+  flexDirection?: string;
+  flexWrap?: string;
+}
 
-// Row
-export const StyledRow = styled.div`
+export const FlexContainer = styled.div<FlexProps>`
   display: flex;
-  flex-direction: row;
+  justify-content: ${({ justifyContent }) => justifyContent || "flex-start"};
+  align-items: ${({ alignItems }) => alignItems || "flex-start"};
+  flex-direction: ${({ flexDirection }) => flexDirection || "row"};
+  flex-wrap: ${({ flexWrap }) => flexWrap || "nowrap"};
 `;
-
 // Stack
 export const StyledStack = styled.div`
   position: relative;
