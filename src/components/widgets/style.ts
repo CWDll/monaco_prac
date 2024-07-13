@@ -26,6 +26,10 @@ interface ContainerProps {
   width?: string;
   height?: string;
   backgroundColor?: string;
+  padding?: string;
+  margin?: string;
+  borderRadius?: string;
+  boxShadow?: string;
 }
 
 export const StyledContainer = styled.div<ContainerProps>`
@@ -33,6 +37,13 @@ export const StyledContainer = styled.div<ContainerProps>`
   height: ${({ height }) => height || "auto"};
   background-color: ${({ backgroundColor }) =>
     backgroundColor || "transparent"};
+  padding: ${({ padding }) => padding || "0"};
+  margin: ${({ margin }) => margin || "0"};
+  border-radius: ${({ borderRadius }) => borderRadius || "0"};
+  box-shadow: ${({ boxShadow }) => boxShadow || "none"};
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // SizedBox
