@@ -53,9 +53,11 @@ export const StyledContainer = styled.div<ContainerProps>`
 interface SizedBoxProps {
   width?: string;
   height?: string;
+  borderRadius?: string;
 }
 
 export const StyledSizedBox = styled.div<SizedBoxProps>`
   width: ${({ width }) => width || "auto"};
   height: ${({ height }) => height || "auto"};
+  border-radius: ${({ borderRadius }) => borderRadius || "0"};
 `;
