@@ -9,7 +9,10 @@ import Stack from "../components/widgets/Stack";
 
 const Home: React.FC = () => {
   const [introText, setIntroText] = React.useState<string>("");
-  const fullIntroText = " 플러터 위젯 테스트중 !";
+  const [fullIntroText, setFullIntroText] =
+    React.useState<string>(" 플러터 위젯 테스트중 !");
+  // const fullIntroText = "플러터 위젯 테스트중 !";
+  const [changeText, setChangeText] = React.useState<string>("");
 
   useEffect(() => {
     let count = 0;
@@ -25,13 +28,23 @@ const Home: React.FC = () => {
     }, 200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fullIntroText]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFullIntroText(changeText);
+    setIntroText("");
+  };
 
   return (
     <div>
       <Text as="mark" color="tomato" fontSize="xl">
         {introText}
       </Text>
+      <form onSubmit={handleSubmit}>
+        <input type="text" onChange={(e) => setChangeText(e.target.value)} />
+        <button type="submit">Submit</button>
+      </form>
 
       <h2>Column Example</h2>
       <Container
