@@ -34,3 +34,14 @@ export const StyledContainer = styled.div<ContainerProps>`
   background-color: ${({ backgroundColor }) =>
     backgroundColor || "transparent"};
 `;
+
+// SizedBox
+interface SizedBoxProps {
+  width?: string;
+  height?: string;
+}
+
+export const StyledSizedBox = styled.div<SizedBoxProps>`
+  width: ${({ width }) => width || "auto"};
+  height: ${({ height }) => height || "auto"};
+`;
