@@ -8,19 +8,59 @@ import Questions from "../components/Questions";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>(CODE_SNIPPETS["javascript"]);
   const [language, setLanguage] = useState<string>("javascript");
   const [highlightedText, setHighlightedText] = useState<string | null>(null);
 
   const handleEditorMount: OnMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
+
     editor.onMouseUp(() => {
       const selectedText = window.getSelection()?.toString();
       if (selectedText) {
         setHighlightedText(selectedText);
       } else {
         setHighlightedText(null);
+      }
+    });
+
+    const foldingController = editor.getContribution(
+      "editor.contrib.folding"
+    ) as any;
+    const foldingModelPromise = foldingController.getFoldingModel();
+
+    foldingModelPromise.then((foldingModel: any) => {
+      if (foldingModel) {
+        foldingModel.onDidChange(() => {
+          const model = editor.getModel();
+          if (model) {
+            const foldedRanges = foldingModel.regions;
+            const foldedTexts: string[] = [];
+
+            for (let i = 0; i < foldedRanges.length; i++) {
+              if (foldedRanges.isCollapsed(i)) {
+                const startLineNumber = foldedRanges.getStartLineNumber(i);
+                const endLineNumber = foldedRanges.getEndLineNumber(i);
+                const foldedText = model.getValueInRange(
+                  new monaco.Range(
+                    startLineNumber,
+                    1,
+                    endLineNumber,
+                    model.getLineMaxColumn(endLineNumber)
+                  )
+                );
+                foldedTexts.push(foldedText);
+              }
+            }
+
+            if (foldedTexts.length > 0) {
+              setHighlightedText(foldedTexts.join("\n\n"));
+            } else {
+              setHighlightedText(null);
+            }
+          }
+        });
       }
     });
   };
@@ -30,10 +70,10 @@ const CodeEditor: React.FC = () => {
     setValue(CODE_SNIPPETS[selectedLanguage] || "");
 
     if (editorRef.current) {
-      monaco.editor.setModelLanguage(
-        editorRef.current.getModel()!,
-        selectedLanguage
-      );
+      const model = editorRef.current.getModel();
+      if (model) {
+        monaco.editor.setModelLanguage(model, selectedLanguage);
+      }
     }
   };
 

@@ -55,6 +55,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="질문을 입력하세요"
+            resize="none"
           />
           <Button onClick={handleAddQuestion}>질문 남기기</Button>
         </VStack>
