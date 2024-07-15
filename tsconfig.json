@@ -4,6 +4,7 @@
     "module": "commonjs",
     "jsx": "react-jsx", // 최신 React JSX 변환
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,

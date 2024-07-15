@@ -1,6 +1,9 @@
 import { Box, Text, Button, Textarea, VStack, Input } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import * as monaco from "monaco-editor";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface QuestionsProps {
   editorRef: React.RefObject<monaco.editor.IStandaloneCodeEditor>;
@@ -50,19 +53,6 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
     }
   }, [highlightedText]);
 
-  // 줄바꿈을 <br /> 태그로 변환하는 함수 (빈 줄 제거)
-  const formatTextWithLineBreaks = (text: string) => {
-    return text
-      .split("\n")
-      .filter((line) => line.trim() !== "")
-      .map((line, index) => (
-        <React.Fragment key={index}>
-          {line}
-          <br />
-        </React.Fragment>
-      ));
-  };
-
   return (
     <Box w="50%">
       {highlightedText && (
@@ -79,9 +69,30 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
       <Box mt={4}>
         {questions.map((item, index) => (
           <Box key={index} mb={4}>
-            <Text as="span" bg="blue.300" p={1} whiteSpace="pre-wrap">
-              {formatTextWithLineBreaks(item.text)}
-            </Text>
+            <Box bg="gray.900" p={4} borderRadius="md">
+              <ReactMarkdown
+                children={item.text}
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={okaidia}
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              />
+            </Box>
             <Text fontWeight="bold" mt={2} whiteSpace="pre-wrap">
               {item.question}
             </Text>
