@@ -23,13 +23,16 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
   >(null);
 
   const handleAddQuestion = () => {
-    if (highlightedText) {
-      setQuestions([
-        ...questions,
-        { text: highlightedText, question, answers: [] },
-      ]);
-      setQuestion("");
+    if (!highlightedText || highlightedText.trim() === "") {
+      alert("코드를 선택해주세요.");
+      return;
     }
+
+    setQuestions([
+      ...questions,
+      { text: highlightedText, question, answers: [] },
+    ]);
+    setQuestion("");
   };
 
   const handleAddAnswer = () => {
