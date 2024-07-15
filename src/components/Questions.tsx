@@ -47,6 +47,19 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
     }
   }, [highlightedText]);
 
+  // 줄바꿈을 <br /> 태그로 변환하는 함수 (빈 줄 제거)
+  const formatTextWithLineBreaks = (text: string) => {
+    return text
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((line, index) => (
+        <React.Fragment key={index}>
+          {line}
+          <br />
+        </React.Fragment>
+      ));
+  };
+
   return (
     <Box w="50%">
       {highlightedText && (
@@ -63,14 +76,14 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
       <Box mt={4}>
         {questions.map((item, index) => (
           <Box key={index} mb={4}>
-            <Text as="span" bg="blue.300" p={1}>
-              {item.text}
+            <Text as="span" bg="blue.300" p={1} whiteSpace="pre-wrap">
+              {formatTextWithLineBreaks(item.text)}
             </Text>
-            <Text fontWeight="bold" mt={2}>
+            <Text fontWeight="bold" mt={2} whiteSpace="pre-wrap">
               {item.question}
             </Text>
             {item.answers.map((ans, ansIndex) => (
-              <Text key={ansIndex} ml={4} mt={1}>
+              <Text key={ansIndex} ml={4} mt={1} whiteSpace="pre-wrap">
                 {ans}
               </Text>
             ))}
