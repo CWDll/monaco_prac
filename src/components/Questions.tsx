@@ -53,7 +53,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
   return (
     <Box w="50%">
       {highlightedText && (
-        <VStack align="stretch" mb={4}>
+        <VStack align="stretch" mb={4} data-color-mode="light">
           <Box bg="gray.900" p={4} borderRadius="md">
             <MDEditor.Markdown
               source={`\`\`\`${language}\n${highlightedText}\n\`\`\``}
@@ -70,7 +70,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
       )}
       <Box mt={4}>
         {questions.map((item, index) => (
-          <Box key={index} mb={4}>
+          <Box key={index} mb={4} data-color-mode="dark">
             <Box bg="gray.900" p={4} borderRadius="md">
               <MDEditor.Markdown source={item.text} />
             </Box>
