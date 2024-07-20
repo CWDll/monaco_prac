@@ -41,14 +41,10 @@ const CodeEditor: React.FC = () => {
             for (let i = 0; i < foldedRanges.length; i++) {
               if (foldedRanges.isCollapsed(i)) {
                 const startLineNumber = foldedRanges.getStartLineNumber(i);
-                const endLineNumber = foldedRanges.getEndLineNumber(i);
+                const endLineNumber = foldedRanges.getEndLineNumber(i) + 1; // 한 줄 추가
+                const endColumn = model.getLineMaxColumn(endLineNumber - 1); // 추가된 줄의 마지막 열 번호
                 const foldedText = model.getValueInRange(
-                  new monaco.Range(
-                    startLineNumber,
-                    1,
-                    endLineNumber,
-                    model.getLineMaxColumn(endLineNumber)
-                  )
+                  new monaco.Range(startLineNumber, 1, endLineNumber, endColumn)
                 );
                 foldedTexts.push(foldedText);
               }
