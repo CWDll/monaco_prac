@@ -50,6 +50,19 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
     }
   }, [highlightedText]);
 
+  // 엔터를 통해 질문 등록, 답변 등록
+  const handleQuestionKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddQuestion();
+    }
+  };
+
+  const handleAnswerKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleAddAnswer();
+    }
+  };
+
   return (
     <Box w="50%">
       {highlightedText && (
@@ -64,6 +77,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="질문을 입력하세요"
+            onKeyPress={handleAddQuestion}
           />
           <Button onClick={handleAddQuestion}>질문 남기기</Button>
         </VStack>
@@ -87,6 +101,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
               value={selectedQuestionIndex === index ? answer : ""}
               onChange={(e) => setAnswer(e.target.value)}
               onFocus={() => setSelectedQuestionIndex(index)}
+              onKeyPress={handleAnswerKeyPress}
             />
             <Button
               mt={2}
