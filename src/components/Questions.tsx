@@ -77,7 +77,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="질문을 입력하세요"
-            onKeyPress={handleAddQuestion}
+            onKeyDown={handleQuestionKeyPress}
           />
           <Button onClick={handleAddQuestion}>질문 남기기</Button>
         </VStack>
@@ -101,7 +101,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
               value={selectedQuestionIndex === index ? answer : ""}
               onChange={(e) => setAnswer(e.target.value)}
               onFocus={() => setSelectedQuestionIndex(index)}
-              onKeyPress={handleAnswerKeyPress}
+              onKeyDown={handleAnswerKeyPress}
             />
             <Button
               mt={2}

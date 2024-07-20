@@ -107,7 +107,7 @@ const Chatting: React.FC = () => {
             placeholder="Type a message..."
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             bg="gray.600"
             border="none"
             _focus={{ borderColor: "teal.500" }}
