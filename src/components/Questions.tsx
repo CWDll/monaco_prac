@@ -1,9 +1,7 @@
-import { Box, Text, Button, Textarea, VStack, Input } from "@chakra-ui/react";
+import { Box, Text, Button, VStack, Input } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import * as monaco from "monaco-editor";
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { okaidia } from "react-syntax-highlighter/dist/esm/styles/prism";
+import MDEditor from "@uiw/react-md-editor";
 
 interface QuestionsProps {
   editorRef: React.RefObject<monaco.editor.IStandaloneCodeEditor>;
@@ -17,7 +15,7 @@ interface Question {
   answers: string[];
 }
 
-const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
+const Questions: React.FC<QuestionsProps> = ({ highlightedText, language }) => {
   const [question, setQuestion] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answer, setAnswer] = useState("");
@@ -31,10 +29,9 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
       return;
     }
 
-    setQuestions([
-      ...questions,
-      { text: highlightedText, question, answers: [] },
-    ]);
+    const codeBlock = `\`\`\`${language}\n${highlightedText}\n\`\`\``;
+
+    setQuestions([...questions, { text: codeBlock, question, answers: [] }]);
     setQuestion("");
   };
 
@@ -57,11 +54,16 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
     <Box w="50%">
       {highlightedText && (
         <VStack align="stretch" mb={4}>
-          <Textarea
+          <Box bg="gray.900" p={4} borderRadius="md">
+            <MDEditor.Markdown
+              source={`\`\`\`${language}\n${highlightedText}\n\`\`\``}
+              data-color-mode="dark"
+            />
+          </Box>
+          <Input
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             placeholder="질문을 입력하세요"
-            resize="none"
           />
           <Button onClick={handleAddQuestion}>질문 남기기</Button>
         </VStack>
@@ -70,28 +72,7 @@ const Questions: React.FC<QuestionsProps> = ({ highlightedText }) => {
         {questions.map((item, index) => (
           <Box key={index} mb={4}>
             <Box bg="gray.900" p={4} borderRadius="md">
-              <ReactMarkdown
-                children={item.text}
-                components={{
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        style={okaidia}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              />
+              <MDEditor.Markdown source={item.text} />
             </Box>
             <Text fontWeight="bold" mt={2} whiteSpace="pre-wrap">
               {item.question}
