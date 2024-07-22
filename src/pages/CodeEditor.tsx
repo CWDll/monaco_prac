@@ -6,7 +6,12 @@ import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
 import Questions from "../components/Questions";
 // api 사용코드 예시(GET)
-import { codeList } from "../apis/CodeService";
+import {
+  codeList,
+  createItem,
+  deleteItem,
+  updateItem,
+} from "../apis/CodeServiceAxios";
 import { Code } from "../apis/Types";
 
 const CodeEditor: React.FC = () => {
@@ -35,6 +40,35 @@ const CodeEditor: React.FC = () => {
 
     fetchCodes();
   }, []);
+
+  const handleCreateItem = async () => {
+    try {
+      const newItem = { id: 0, code: 'New Code' }; // 예시 데이터
+      const createdItem = await createItem(newItem);
+      setCodes([...codes, createdItem]);
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleDeleteItem = async (id: number) => {
+    try {
+      await deleteItem(id);
+      setCodes(codes.filter(code => code.id !== id));
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleUpdateItem = async (id: number) => {
+    try {
+      const updatedData = { id, code: 'Updated Code' }; // 예시 데이터
+      const updatedItem = await updateItem(id, updatedData);
+      setCodes(codes.map(code => (code.id === id ? updatedItem : code)));
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
   */
 
   const handleEditorMount: OnMount = (editor) => {
