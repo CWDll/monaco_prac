@@ -1,16 +1,40 @@
 import { Box, HStack } from "@chakra-ui/react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import * as monaco from "monaco-editor";
 import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
 import Questions from "../components/Questions";
+// api 사용코드 예시(GET)
+import { Code, codeList } from "../apis/CodeService";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>(CODE_SNIPPETS["javascript"]);
   const [language, setLanguage] = useState<string>("javascript");
   const [highlightedText, setHighlightedText] = useState<string | null>(null);
+
+  // api 사용코드 예시(GET)
+  /*
+  const [loading, setLoading] = useState<boolean>(true);
+  const [codes, setCodes] = useState<Code[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchCodes = async () => {
+      try {
+        setLoading(true);
+        const data = await codeList();
+        setCodes(data);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchCodes();
+  }, []);
+  */
 
   const handleEditorMount: OnMount = (editor) => {
     editorRef.current = editor;
