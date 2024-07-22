@@ -6,7 +6,8 @@ import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
 import Questions from "../components/Questions";
 // api 사용코드 예시(GET)
-import { Code, codeList } from "../apis/CodeService";
+import { codeList } from "../apis/CodeService";
+import { Code } from "../apis/Types";
 
 const CodeEditor: React.FC = () => {
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
