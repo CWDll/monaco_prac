@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as S from "./style";
+import { CalendarProps } from "react-calendar";
 
 const MyCalendar = () => {
   // useState 훅의 초기값으로 현재 날짜를 넣어줌
@@ -10,9 +11,19 @@ const MyCalendar = () => {
     setToday(today);
   };
 
+  // 요일 이름 길게 만들기(ex. mon, tue, ... -> Monday, Tuesday, ...)
+  const formatDay: CalendarProps["formatShortWeekday"] = (locale, date) => {
+    return date.toLocaleDateString(locale, { weekday: "long" });
+  };
+
   return (
     <S.CalendarBox>
-      <S.StyleCalendar locale="en" onChange={onChangeToday} value={today} />
+      <S.StyleCalendar
+        locale="en"
+        onChange={onChangeToday}
+        value={today}
+        formatShortWeekday={formatDay}
+      />
     </S.CalendarBox>
   );
 };

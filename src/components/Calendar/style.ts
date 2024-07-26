@@ -39,7 +39,7 @@ export const StyleCalendar = styled(Calendar)`
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 0.85em; /* 크기를 줄임 */
+    font-size: 1em; /* 크기를 키움 */
     color: #42850d; /* 텍스트 색상 설정 */
   }
 
