@@ -47,8 +47,10 @@ export const StyleCalendar = styled(Calendar)`
     color: #42850d; /* 주말 텍스트 색상 설정 */
   }
 
+  // 달력 내부 타일 (1일 ~ 31일) 크기 조정
   .react-calendar__tile {
-    padding: 0.5em 0.5em; /* 패딩 조정 */
+    padding: 2em; /* 패딩 조정 */
+    font-size: 1.2em; /* 폰트 크기 조정 */
     text-align: center;
     position: relative;
   }
