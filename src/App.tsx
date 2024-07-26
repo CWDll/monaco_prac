@@ -4,6 +4,7 @@ import CodeEditor from "./pages/CodeEditor";
 import TADiffEditPage from "./pages/TADiffEditPage";
 import Home from "./pages/Home";
 import TAEditPage from "./pages/TAEditPage";
+import Calendar from "./pages/Calendar";
 
 function App() {
   const location = useLocation();
@@ -35,6 +36,12 @@ function App() {
               TA Edit Page
             </Button>
           </Link>
+          <p>/</p>
+          <Link to="/calendar">
+            <Button mx={2} color={getButtonColorScheme("/calendar")}>
+              Calendar
+            </Button>
+          </Link>
         </Flex>
         <Flex width="2em"></Flex>
       </Flex>
@@ -43,6 +50,7 @@ function App() {
         <Route path="/code-editor" element={<CodeEditor />} />
         <Route path="/ta-diffEditPage" element={<TADiffEditPage />} />
         <Route path="/ta-editPage" element={<TAEditPage />} />
+        <Route path="/calendar" element={<Calendar />} />
       </Routes>
     </Box>
   );
