@@ -24,6 +24,11 @@ const MyCalendar = () => {
         onChange={onChangeToday}
         value={today}
         formatShortWeekday={formatDay}
+        // Icon을 next(prev)Label= 에 컴포넌트 형식으로 할당해주면 됨.
+        nextLabel=">"
+        prevLabel="<"
+        // 이전 달, 다음 달 날짜 숨기기
+        showNeighboringMonth={false}
       />
     </S.CalendarBox>
   );
