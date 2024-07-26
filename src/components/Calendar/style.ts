@@ -50,6 +50,7 @@ export const StyleCalendar = styled(Calendar)`
   .react-calendar__tile {
     padding: 0.5em 0.5em; /* 패딩 조정 */
     text-align: center;
+    position: relative;
   }
 
   .react-calendar__tile:enabled:hover,
@@ -59,9 +60,11 @@ export const StyleCalendar = styled(Calendar)`
   }
 
   .react-calendar__tile--now {
-    background: #dcf8a3; /* 오늘 날짜 배경 색상 */
-    color: #42850d; /* 오늘 날짜 텍스트 색상 */
+    background: #ffffff; /* 오늘 날짜 배경 색상 */
+    color: transparent; /* 오늘 날짜 숫자 숨김 */
     border-radius: 5px;
+    border: 1px solid #42850d; /* 오늘 날짜 테두리 색상 */
+    position: relative;
   }
 
   .react-calendar__tile--now:enabled:hover,
@@ -69,8 +72,24 @@ export const StyleCalendar = styled(Calendar)`
     background: #dcf8a3; /* 오늘 날짜 호버 시 배경 색상 */
   }
 
+  .react-calendar__tile--now .today-label {
+    color: #42850d; /* 오늘 텍스트 색상 */
+    position: absolute;
+    z-index: 10;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 1em;
+    width: auto;
+    height: auto;
+
+    background: #ffffff; /* 오늘 텍스트 배경 색상 */
+  }
+
   .react-calendar__tile--active {
-    background: #42850d; /* 선택된 날짜 배경 색상 */
+    // background: #42850d; /* 선택된 날짜 배경 색상 */
     color: #ffffff; /* 선택된 날짜 텍스트 색상 */
     border-radius: 5px;
   }
