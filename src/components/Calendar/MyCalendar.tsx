@@ -20,6 +20,7 @@ const MyCalendar = () => {
     <S.CalendarBox>
       <S.StyleCalendar
         locale="en"
+        calendarType="gregory"
         onChange={onChangeToday}
         value={today}
         formatShortWeekday={formatDay}
