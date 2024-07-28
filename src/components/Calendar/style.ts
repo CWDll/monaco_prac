@@ -41,6 +41,9 @@ export const StyleCalendar = styled(Calendar)`
     font-weight: bold;
     font-size: 1em; /* 크기를 키움 */
     color: #42850d; /* 텍스트 색상 설정 */
+    border-top: 1px solid #42850d; /* 요일 테두리 색상 */
+
+    border-bottom: 1px solid #42850d; /* 요일 테두리 색상 */
   }
 
   .react-calendar__month-view__days__day--weekend {
