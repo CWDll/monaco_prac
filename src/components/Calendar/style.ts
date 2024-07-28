@@ -111,4 +111,8 @@ export const StyleCalendar = styled(Calendar)`
   .react-calendar__tile--hasActive:enabled:focus {
     background: #42850d; /* 활성화된 날짜 호버 시 배경 색상 */
   }
+
+  .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none; /* 밑줄 제거 */
+  }
 `;
