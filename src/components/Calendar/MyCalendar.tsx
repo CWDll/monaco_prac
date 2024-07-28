@@ -17,14 +17,6 @@ const MyCalendar = () => {
     return date.toLocaleDateString(locale, { weekday: "long" });
   };
 
-  // 요일 이름 길게 만들기(ex. mon, tue, ... -> Monday, Tuesday, ...)
-  const tileContent = ({ date, view }: { date: Date; view: string }) => {
-    if (view === "month" && date.toDateString() === new Date().toDateString()) {
-      return <span className="today-label">오늘</span>;
-    }
-    return null;
-  };
-
   // 태그 삽입 날짜 리스트
   const dayList = [
     "2024-07-02",
@@ -35,15 +27,21 @@ const MyCalendar = () => {
     "2024-07-17",
     "2024-07-20",
   ];
-  // 태그 삽입 날짜 타일에 컨텐츠 추가
-  const addTag = ({ date }: any) => {
-    // 해당 날짜(하루)에 추가할 컨텐츠의 배열
+
+  // 요일 이름 길게 만들기 및 태그 추가 기능 결합
+  const tileContent = ({ date, view }: { date: Date; view: string }) => {
     const contents: any[] = [];
 
-    // date가 dayList와 일치하면 태그 추가 (npm install moment)
-    if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
-      contents.push(<span className="tag">태그</span>);
+    if (view === "month") {
+      if (date.toDateString() === new Date().toDateString()) {
+        contents.push(<span className="today-label">오늘</span>);
+      }
+
+      if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
+        contents.push(<span className="tag">태그</span>);
+      }
     }
+
     return <div>{contents}</div>;
   };
 
@@ -61,7 +59,7 @@ const MyCalendar = () => {
         // 이전 달, 다음 달 날짜 숨기기
         showNeighboringMonth={false}
         // 오늘 날짜를 "오눌"로 표시
-        tileContent={addTag}
+        tileContent={tileContent}
       />
     </S.CalendarBox>
   );
