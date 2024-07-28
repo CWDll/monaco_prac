@@ -28,6 +28,15 @@ const MyCalendar = () => {
     "2024-07-20",
   ];
 
+  // 날짜를 비교하는 함수
+  const isSameDay = (date1: Date, date2: Date) => {
+    // console.log("nonSplit:", date1.toISOString()); -> 2024-07-30T15:00:00.000Z
+    // console.log("split:", date1.toISOString().split("T")[0]); -> 2024-07-30
+    return (
+      date1.toISOString().split("T")[0] === date2.toISOString().split("T")[0]
+    );
+  };
+
   // 요일 이름 길게 만들기 및 태그 추가 기능 결합
   const tileContent = ({ date, view }: { date: Date; view: string }) => {
     const contents: any[] = [];
@@ -37,7 +46,8 @@ const MyCalendar = () => {
         contents.push(<span className="today-label">오늘</span>);
       }
 
-      if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
+      // if (dayList.find((day) => day === moment(date).format("YYYY-MM-DD"))) {
+      if (dayList.find((day) => isSameDay(date, new Date(day)))) {
         contents.push(<span className="tag">태그</span>);
       }
     }
