@@ -1,75 +1,131 @@
-import { Box, HStack } from "@chakra-ui/react";
+import React, {useRef, useState} from "react";
+import { Box, HStack, Button, Input } from "@chakra-ui/react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import React, { useState, useRef, useEffect } from "react";
 import * as monaco from "monaco-editor";
 import LanguageSelector from "../components/LanguageSelector";
 import { CODE_SNIPPETS } from "../constants";
 import Questions from "../components/Questions";
-// api 사용코드 예시(GET)
-import {
-  codeList,
-  createItem,
-  deleteItem,
-  updateItem,
-} from "../apis/CodeServiceAxios";
-import { Code } from "../apis/Types";
+
+// 디렉토리 구조 데이터
+const initialFileStructure = [
+  {
+    type: "folder",
+    name: "components",
+    children: [
+      { type: "file", name: "Button.js" },
+      { type: "file", name: "ButtonGroup.js" },
+      { type: "file", name: "Dropdown.js" },
+    ],
+  },
+  {
+    type: "folder",
+    name: "hooks",
+    children: [
+      { type: "file", name: "useFetch.js" },
+      { type: "file", name: "useLocalStorage.js" },
+    ],
+  },
+  // 추가적인 디렉토리 및 파일들
+];
+
+const FileTree = ({ structure, level = 0, onFileClick, onAddItem }) => {
+  const [openFolders, setOpenFolders] = useState({});
+  const [newItemName, setNewItemName] = useState("");
+
+  const handleFolderClick = (folderName) => {
+    setOpenFolders((prevState) => ({
+      ...prevState,
+      [folderName]: !prevState[folderName],
+    }));
+  };
+
+  const handleAddItem = (type, parentFolder) => {
+    if (newItemName.trim() === "") return;
+    onAddItem(type, newItemName, parentFolder);
+    setNewItemName(""); // 입력 필드 초기화
+  };
+
+  return (
+      <ul style={{ paddingLeft: level * 10 }}>
+        {structure.map((item, index) => (
+            <li key={index} style={{ listStyleType: item.type === "folder" ? "disc" : "none" }}>
+              {item.type === "folder" ? (
+                  <>
+              <span
+                  onClick={() => handleFolderClick(item.name)}
+                  style={{ cursor: "pointer", fontWeight: "bold" }}
+              >
+                {openFolders[item.name] ? "📂" : "📁"} {item.name}
+              </span>
+                    {openFolders[item.name] && (
+                        <>
+                          <FileTree
+                              structure={item.children}
+                              level={level + 1}
+                              onFileClick={onFileClick}
+                              onAddItem={onAddItem}
+                          />
+                          <div style={{ paddingLeft: 20 }}>
+                            <Input
+                                value={newItemName}
+                                onChange={(e) => setNewItemName(e.target.value)}
+                                placeholder="New item name"
+                                size="sm"
+                            />
+                            <Button
+                                size="xs"
+                                onClick={() => handleAddItem("file", item.name)}
+                                ml={2}
+                            >
+                              Add File
+                            </Button>
+                            <Button
+                                size="xs"
+                                onClick={() => handleAddItem("folder", item.name)}
+                                ml={2}
+                            >
+                              Add Folder
+                            </Button>
+                          </div>
+                        </>
+                    )}
+                  </>
+              ) : (
+                  <span
+                      onClick={() => onFileClick(item.name)}
+                      style={{ paddingLeft: "20px", cursor: "pointer" }}
+                  >
+              📄 {item.name}
+            </span>
+              )}
+            </li>
+        ))}
+        {level === 0 && (
+            <div>
+              <Input
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                  placeholder="New item name"
+                  size="sm"
+              />
+              <Button size="xs" onClick={() => handleAddItem("file")} ml={2}>
+                Add File
+              </Button>
+              <Button size="xs" onClick={() => handleAddItem("folder")} ml={2}>
+                Add Folder
+              </Button>
+            </div>
+        )}
+      </ul>
+  );
+};
 
 const CodeEditor: React.FC = () => {
+  const [fileStructure, setFileStructure] = useState(initialFileStructure);
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>(CODE_SNIPPETS["javascript"]);
   const [language, setLanguage] = useState<string>("javascript");
   const [highlightedText, setHighlightedText] = useState<string | null>(null);
-
-  // api 사용코드 예시(GET)
-  /*
-  const [loading, setLoading] = useState<boolean>(true);
-  const [codes, setCodes] = useState<Code[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchCodes = async () => {
-      try {
-        setLoading(true);
-        const data = await codeList();
-        setCodes(data);
-        setLoading(false);
-      } catch (err: any) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchCodes();
-  }, []);
-
-  const handleCreateItem = async () => {
-    try {
-      const newItem = { id: 0, code: 'New Code' }; // 예시 데이터
-      const createdItem = await createItem(newItem);
-      setCodes([...codes, createdItem]);
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  const handleDeleteItem = async (id: number) => {
-    try {
-      await deleteItem(id);
-      setCodes(codes.filter(code => code.id !== id));
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  const handleUpdateItem = async (id: number) => {
-    try {
-      const updatedData = { id, code: 'Updated Code' }; // 예시 데이터
-      const updatedItem = await updateItem(id, updatedData);
-      setCodes(codes.map(code => (code.id === id ? updatedItem : code)));
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-  */
 
   const handleEditorMount: OnMount = (editor) => {
     editorRef.current = editor;
@@ -81,41 +137,6 @@ const CodeEditor: React.FC = () => {
         setHighlightedText(selectedText);
       } else {
         setHighlightedText(null);
-      }
-    });
-
-    const foldingController = editor.getContribution(
-      "editor.contrib.folding"
-    ) as any;
-    const foldingModelPromise = foldingController.getFoldingModel();
-
-    foldingModelPromise.then((foldingModel: any) => {
-      if (foldingModel) {
-        foldingModel.onDidChange(() => {
-          const model = editor.getModel();
-          if (model) {
-            const foldedRanges = foldingModel.regions;
-            const foldedTexts: string[] = [];
-
-            for (let i = 0; i < foldedRanges.length; i++) {
-              if (foldedRanges.isCollapsed(i)) {
-                const startLineNumber = foldedRanges.getStartLineNumber(i);
-                const endLineNumber = foldedRanges.getEndLineNumber(i) + 1; // 한 줄 추가
-                const endColumn = model.getLineMaxColumn(endLineNumber - 1); // 추가된 줄의 마지막 열 번호
-                const foldedText = model.getValueInRange(
-                  new monaco.Range(startLineNumber, 1, endLineNumber, endColumn)
-                );
-                foldedTexts.push(foldedText);
-              }
-            }
-
-            if (foldedTexts.length > 0) {
-              setHighlightedText(foldedTexts.join("\n\n"));
-            } else {
-              setHighlightedText(null);
-            }
-          }
-        });
       }
     });
   };
@@ -132,29 +153,77 @@ const CodeEditor: React.FC = () => {
     }
   };
 
-  return (
-    <Box>
-      <HStack spacing={4}>
-        <Box w="50%">
-          <LanguageSelector language={language} onSelect={onSelect} />
-          <Editor
-            height="75vh"
-            theme="vs-dark"
-            defaultValue={CODE_SNIPPETS[language]}
-            language={language}
-            onMount={handleEditorMount}
-            value={value}
-            onChange={(val) => setValue(val || "")}
-          />
-        </Box>
+  const handleFileClick = (fileName: string) => {
+    setValue(`// This is the content of ${fileName}`);
+  };
 
-        <Questions
-          editorRef={editorRef}
-          language={language}
-          highlightedText={highlightedText}
-        />
-      </HStack>
-    </Box>
+  const addItem = (type, name, parentFolder = null) => {
+    const newStructure = [...fileStructure];
+
+    const findFolderAndAddItem = (folder) => {
+      if (folder.name === parentFolder) {
+        folder.children.push({
+          type: type,
+          name: name,
+          children: type === "folder" ? [] : undefined,
+        });
+        return true;
+      } else if (folder.children && folder.children.length > 0) {
+        for (let i = 0; i < folder.children.length; i++) {
+          if (folder.children[i].type === "folder") {
+            if (findFolderAndAddItem(folder.children[i])) return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    if (parentFolder) {
+      for (let i = 0; i < newStructure.length; i++) {
+        if (newStructure[i].type === "folder") {
+          if (findFolderAndAddItem(newStructure[i])) break;
+        }
+      }
+    } else {
+      newStructure.push({
+        type: type,
+        name: name,
+        children: type === "folder" ? [] : undefined,
+      });
+    }
+
+    setFileStructure(newStructure);
+  };
+
+  return (
+      <Box>
+        <HStack spacing={4}>
+          <Box w="20%" borderRight="1px solid #ccc">
+            <FileTree
+                structure={fileStructure}
+                onFileClick={handleFileClick}
+                onAddItem={addItem}
+            />
+          </Box>
+          <Box w="80%">
+            <LanguageSelector language={language} onSelect={onSelect} />
+            <Editor
+                height="75vh"
+                theme="vs-dark"
+                defaultValue={CODE_SNIPPETS[language]}
+                language={language}
+                onMount={handleEditorMount}
+                value={value}
+                onChange={(val) => setValue(val || "")}
+            />
+            <Questions
+                editorRef={editorRef}
+                language={language}
+                highlightedText={highlightedText}
+            />
+          </Box>
+        </HStack>
+      </Box>
   );
 };
 
